@@ -27,6 +27,9 @@ namespace L4dOpenMatchMakingPlatform.Backend
 
             app.MapControllers();
 
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
+
             app.Run();
         }
     }
