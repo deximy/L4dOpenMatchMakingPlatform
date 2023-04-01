@@ -4,6 +4,7 @@ import {createRouter, createWebHistory} from "vue-router";
 import App from "./App.vue";
 import Index from "./views/Index.vue";
 import Callback from "./views/Callback.vue";
+import QuickPlayView from "./views/QuickPlayView.vue";
 
 const routes = [
     {
@@ -15,6 +16,11 @@ const routes = [
         name: "Callback",
         path: "/callback",
         component: Callback
+    },
+    {
+        name: "QuickPlay",
+        path: "/quick-play",
+        component: QuickPlayView
     },
 ];
 
