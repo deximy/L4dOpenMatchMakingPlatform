@@ -26,11 +26,13 @@ const props = defineProps(
                 <n-card
                     class="mode-card"
                     content-style="display: flex; justify-content: center; align-items: center;"
-                    hoverable
+                    :hoverable="mode.enabled"
                 >
                     <span v-text="mode.name"/>
                     <template #action>
-                        <n-checkbox />
+                        <n-checkbox
+                            :disabled="!mode.enabled"
+                        />
                     </template>
                 </n-card>
             </n-grid-item>
