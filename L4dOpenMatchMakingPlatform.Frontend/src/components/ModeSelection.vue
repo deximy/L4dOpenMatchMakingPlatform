@@ -5,12 +5,11 @@ import {NCard} from "naive-ui";
 import {NCheckbox} from "naive-ui";
 import {NGrid, NGridItem} from "naive-ui";
 
-const props = defineProps(
+const props = defineProps<
     {
-        mode_list: Array<GameMode>
+        mode_list: Array<GameMode & {"selected": boolean}>
     }
-);
-
+>();
 </script>
 
 <template>
@@ -21,7 +20,8 @@ const props = defineProps(
             :y-gap="12"
         >
             <n-grid-item
-                v-for="mode in mode_list"
+                v-for="(mode, index) in mode_list"
+                :key="index"
             >
                 <n-card
                     class="mode-card"
@@ -32,6 +32,7 @@ const props = defineProps(
                     <template #action>
                         <n-checkbox
                             :disabled="!mode.enabled"
+                            v-model:checked="mode.selected"
                         />
                     </template>
                 </n-card>
