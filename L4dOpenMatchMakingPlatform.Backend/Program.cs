@@ -1,3 +1,5 @@
+using L4dOpenMatchMakingPlatform.Backend.Services;
+
 namespace L4dOpenMatchMakingPlatform.Backend
 {
     public class Program
@@ -7,6 +9,7 @@ namespace L4dOpenMatchMakingPlatform.Backend
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Services.AddSignalR();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -22,10 +25,16 @@ namespace L4dOpenMatchMakingPlatform.Backend
                 app.UseSwaggerUI();
             }
 
+            app.UseRouting();
+
             app.UseAuthorization();
 
-
-            app.MapControllers();
+            app.UseEndpoints(
+                endpoints => {
+                    endpoints.MapControllers();
+                    endpoints.UseModeQueueManager();
+                }
+            );
 
             app.UseDefaultFiles();
             app.UseStaticFiles();

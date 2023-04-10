@@ -11,7 +11,13 @@ export default defineConfig(
             vue(),
         ],
         server: {
-            port: 7001
+            port: 7001,
+            proxy: {
+                "/Hunter1v1": {
+                    target: "ws://localhost:7000",
+                    changeOrigin: true,
+                }
+            }
         }
     },
 );
