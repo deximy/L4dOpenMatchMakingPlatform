@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {IsAuthenticated, GetUserIdFromToken} from "../apis/Authentication";
+import {Global} from "../apis/Global";
 import {ref} from "vue";
 
 const is_authenticated = ref(false);
@@ -13,7 +14,7 @@ GetUserIdFromToken().then(result => user_id.value = result);
     <div class="index">
         <div v-if="!is_authenticated">
             <span>这是一个什么都没有的首页，</span>
-            <a href="http://localhost:5173/authentication/?redirect=http://localhost:5174/callback">点击跳转到登录页</a>
+            <a :href="`http://localhost:5000/authentication/?redirect=${Global.realm}/callback`">点击跳转到登录页</a>
         </div>
         <div v-else>
             <span>这是一个什么都没有的首页，你已登录，ID：</span><span v-text="`${user_id}`"></span>
