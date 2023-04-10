@@ -1,14 +1,18 @@
 <script setup lang="ts">
+import {NMessageProvider} from "naive-ui";
 </script>
 
 <template>
-    <router-view />
+    <n-message-provider>
+        <router-view />
+    </n-message-provider>
 </template>
 
 <style>
 body {
     width: 100%;
     height: 100%;
+    margin: 0;
 }
 
 #app {

@@ -6,6 +6,14 @@ import * as SignalR from "@microsoft/signalr";
 import ModeSelection from "../components/ModeSelection.vue";
 
 import {NButton} from "naive-ui";
+import {useMessage as UseMessage, MessageReactive} from "naive-ui";
+
+type GameModeWithStatus = GameMode & {
+    "selected": boolean,
+    "connection": SignalR.HubConnection | null,
+    "message_box": MessageReactive | null,
+    "start_at": number | null,
+};
 
 const mode_controller = new ModeController();
 
@@ -16,14 +24,7 @@ mode_controller.GetModeList().then(
     }
 );
 
-const mode_list_with_status = ref<
-    Array<
-        GameMode & {
-            "selected": boolean,
-            "connection": SignalR.HubConnection | null,
-        }
-    >
->([]);
+const mode_list_with_status = ref<GameModeWithStatus[]>([]);
 watch(
     () => mode_list.value,
     (mode_list) => {
@@ -38,7 +39,9 @@ watch(
                     {
                         ...mode,
                         "selected": false,
-                        "connection": null
+                        "connection": null,
+                        "message_box": null,
+                        "start_at": null,
                     }
                 );
             }
@@ -57,24 +60,64 @@ watch(
     }
 );
 
+const message = UseMessage();
+const QuitQueue = async (mode_with_status: GameModeWithStatus) => {
+    await mode_with_status.connection?.stop();
+    mode_with_status.connection = null;
+    mode_with_status.selected = false;
+    mode_with_status.message_box?.destroy();
+    mode_with_status.message_box = null;
+    mode_with_status.start_at = null;
+};
 const HandleEnterQueue = () => {
-    mode_list_with_status.value
-        .filter(mode_with_status => mode_with_status.selected == true)
+    (mode_list_with_status.value as GameModeWithStatus[])
+        .filter(mode_with_status => mode_with_status.selected)
         .map(
             async (mode_with_status) => {
                 const connection = new SignalR.HubConnectionBuilder().withUrl(`/${mode_with_status.name}`).build();
                 await connection.start();
                 mode_with_status.connection = connection;
+
+                mode_with_status.message_box = message.info(
+                    `正在队列中…… 模式：${mode_with_status.name} 排队时间：0:00`,
+                    {
+                        duration: 0,
+                        closable: true,
+                        onClose: () => {
+                            QuitQueue(mode_with_status);
+                        }
+                    }
+                );
+
+                mode_with_status.start_at = new Date().getTime();
+                const UpdateContent = () => {
+                    if (mode_with_status.message_box === null || mode_with_status.start_at === null)
+                    {
+                        return;
+                    }
+                    let span = new Date(new Date().getTime() - mode_with_status.start_at);
+                    let span_seconds = span.getUTCSeconds();
+                    let span_minutes = span.getUTCMinutes();
+                    let span_hours = span.getUTCHours();
+                    let formatted_span = span_hours > 0 ? `${span_hours.toString().padStart(2, "0") + ":"}` : "";
+                    formatted_span += span_minutes.toString() + ":";
+                    formatted_span += span_seconds.toString().padStart(2, "0");
+                    mode_with_status.message_box.content = `正在队列中…… 模式：${mode_with_status.name} 排队时间：${formatted_span}`;
+                    setTimeout(
+                        UpdateContent,
+                        100
+                    );
+                };
+                setTimeout(UpdateContent, 1000);
             }
         );
 };
 const HandleQuitQueue = () => {
-    mode_list_with_status.value
+    (mode_list_with_status.value as GameModeWithStatus[])
         .filter(mode_with_status => mode_with_status.connection !== null)
         .map(
             async (mode_with_status) => {
-                await mode_with_status.connection?.stop();
-                mode_with_status.connection = null;
+                await QuitQueue(mode_with_status);
             }
         );
 };
