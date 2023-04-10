@@ -15,17 +15,25 @@ mode_controller.GetModeList().then(
     }
 );
 
-const mode_list_with_state = ref<Array<GameMode & {"selected": boolean}>>([]);
+const mode_list_with_status = ref<Array<GameMode & {"selected": boolean}>>([]);
 watch(
     () => mode_list.value,
     (mode_list) => {
         const key_set = new Set(mode_list.map(mode => mode.name));
-        mode_list_with_state.value = mode_list_with_state.value.filter(mode_with_state => key_set.has(mode_with_state.name));
+        mode_list_with_status.value = mode_list_with_status.value.filter(mode_with_status => key_set.has(mode_with_status.name));
         for (const mode of mode_list)
         {
-            if (mode_list_with_state.value.findIndex(mode_with_state => mode_with_state.name === mode.name) === -1)
+            let mode_index = mode_list_with_status.value.findIndex(mode_with_status => mode_with_status.name === mode.name);
+            if (mode_index === -1)
             {
-                mode_list_with_state.value.push({...mode, "selected": false});
+                mode_list_with_status.value.push({...mode, "selected": false});
+            }
+            else
+            {
+                mode_list_with_status.value[mode_index] = {
+                    ...mode,
+                    "selected": mode.enabled && mode_list_with_status.value[mode_index].selected
+                };
             }
         }
     },
@@ -39,12 +47,12 @@ watch(
     <div class="quick-play-view">
         <h1 class="title">选择匹配模式</h1>
         <ModeSelection
-            :mode_list="mode_list_with_state"
+            :mode_list="mode_list_with_status"
         />
         <div class="start-play">
             <n-button
                 size="large"
-                :disabled="mode_list_with_state.filter(mode_with_state => mode_with_state.selected).length === 0"
+                :disabled="mode_list_with_status.filter(mode_with_status => mode_with_status.selected).length === 0"
             >
                 开始
             </n-button>
