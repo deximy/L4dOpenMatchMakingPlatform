@@ -1,4 +1,4 @@
-﻿using L4dOpenMatchMakingPlatform.Backend.ViewModels;
+﻿using L4dOpenMatchMakingPlatform.Backend.DTOs;
 using Microsoft.AspNetCore.SignalR;
 
 namespace L4dOpenMatchMakingPlatform.Backend.Services
@@ -31,8 +31,8 @@ namespace L4dOpenMatchMakingPlatform.Backend.Services
             client_list_.Add(connection_id);
             await Clients.All.SendCoreAsync(
                 "OnQueueConnected",
-                new ModeQueueChangedViewModel[] {
-                    new ModeQueueChangedViewModel() {
+                new ModeQueueChangedDTO[] {
+                    new ModeQueueChangedDTO() {
                         id = connection_id,
                         count = client_list_.Count
                     }
@@ -45,8 +45,8 @@ namespace L4dOpenMatchMakingPlatform.Backend.Services
             client_list_.Add(connection_id);
             await Clients.All.SendCoreAsync(
                 "OnQueueDisconnected",
-                new ModeQueueChangedViewModel[] {
-                    new ModeQueueChangedViewModel() {
+                new ModeQueueChangedDTO[] {
+                    new ModeQueueChangedDTO() {
                         id = connection_id,
                         count = client_list_.Count
                     }
