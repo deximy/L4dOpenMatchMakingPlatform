@@ -14,16 +14,32 @@ namespace L4dOpenMatchMakingPlatform.Backend.Services
 
         public async override Task OnConnectedAsync()
         {
-            Console.WriteLine($"OnConnectedAsync triggered. Connection ID: {Context.ConnectionId}");
-            await base.OnConnectedAsync();
-            await HandleQueueConnected(Context.ConnectionId);
+            Console.WriteLine($"OnConnectedAsync triggered. User Identifier: {Context.UserIdentifier}");
+            try
+            {
+                var user_id = Guid.Parse(Context.UserIdentifier ?? string.Empty);
+                await base.OnConnectedAsync();
+                await HandleQueueConnected(user_id.ToString());
+            }
+            catch (Exception exception)
+            {
+                throw new HubException(exception.Message);
+            }
         }
 
         public async override Task OnDisconnectedAsync(Exception? exception)
         {
-            Console.WriteLine($"OnDisconnectedAsync. Connection ID: {Context.ConnectionId}");
-            await base.OnDisconnectedAsync(exception);
-            await HandleQueueDisconnected(Context.ConnectionId);
+            Console.WriteLine($"OnDisconnectedAsync. User Identifier: {Context.UserIdentifier}");
+            try
+            {
+                var user_id = Guid.Parse(Context.UserIdentifier ?? string.Empty);
+                await base.OnDisconnectedAsync(exception);
+                await HandleQueueDisconnected(user_id.ToString());
+            }
+            catch
+            {
+                throw new HubException(exception?.Message);
+            }
         }
 
         public async virtual Task HandleQueueConnected(string connection_id)

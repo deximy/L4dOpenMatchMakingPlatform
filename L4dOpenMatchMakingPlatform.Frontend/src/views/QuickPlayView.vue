@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {GameMode, ModeController} from "../apis/ModeController";
+import {GetUserIdFromToken} from "../apis/Authentication";
 import {ref, watch} from "vue";
 import * as SignalR from "@microsoft/signalr";
 
@@ -74,8 +75,34 @@ const HandleEnterQueue = () => {
         .filter(mode_with_status => mode_with_status.selected)
         .map(
             async (mode_with_status) => {
-                const connection = new SignalR.HubConnectionBuilder().withUrl(`/${mode_with_status.name}`).build();
+                const connection = new SignalR.HubConnectionBuilder()
+                    .withUrl(
+                        `/${mode_with_status.name}`,
+                        {
+                            accessTokenFactory: async () => {
+                                return await GetUserIdFromToken();
+                            }
+                        }
+                    )
+                    .build();
+
+                connection.onclose(
+                    (error) => {
+                        if (error !== undefined)
+                        {
+                            QuitQueue(mode_with_status);
+                            message.error(
+                                error?.message ?? "",
+                                {
+                                    duration: 10000,
+                                    closable: true
+                                }
+                            );
+                        }
+                    }
+                );
                 await connection.start();
+
                 mode_with_status.connection = connection;
 
                 mode_with_status.message_box = message.info(
