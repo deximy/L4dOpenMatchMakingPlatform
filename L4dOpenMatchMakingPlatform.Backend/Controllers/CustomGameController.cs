@@ -176,5 +176,51 @@ namespace L4dOpenMatchMakingPlatform.Backend
 
             return Ok();
         }
+
+        [HttpPost("{lobby_id}/teams/{team_id}/players/{player_id}")]
+        public IActionResult HandlePlayerJoinLobby([FromRoute] Guid lobby_id, [FromRoute] Guid team_id, [FromRoute] Guid player_id)
+        {
+            var lobby = custom_game_service_.GetGustomGame(lobby_id);
+            if (lobby.team1.team_id == team_id)
+            {
+                lobby.team1.current_players.Add(player_id);
+            }
+            else if (lobby.team2.team_id == team_id)
+            {
+                lobby.team2.current_players.Add(player_id);
+            }
+            else if (lobby.team3.team_id == team_id)
+            {
+                lobby.team3.current_players.Add(player_id);
+            }
+            else
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
+        [HttpDelete("{lobby_id}/teams/{team_id}/players/{player_id}")]
+        public IActionResult HandlePlayerLeaveLobby([FromRoute] Guid lobby_id, [FromRoute] Guid team_id, [FromRoute] Guid player_id)
+        {
+            var lobby = custom_game_service_.GetGustomGame(lobby_id);
+            if (lobby.team1.team_id == team_id)
+            {
+                lobby.team1.current_players.Remove(player_id);
+            }
+            else if (lobby.team2.team_id == team_id)
+            {
+                lobby.team2.current_players.Remove(player_id);
+            }
+            else if (lobby.team3.team_id == team_id)
+            {
+                lobby.team3.current_players.Remove(player_id);
+            }
+            else
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
     }
 }

@@ -94,6 +94,28 @@ class CustomGameManager
         );
         return response.json();
     }
+
+    public async JoinTeam(lobby_id: string, team_id: string)
+    {
+        let response = await fetch(
+            `${this.uri_}/${lobby_id}/teams/${team_id}/players/${await GetUserIdFromToken()}`,
+            {
+                method: "POST",
+            }
+        );
+        return response.ok;
+    }
+
+    public async LeaveTeam(lobby_id: string, team_id: string)
+    {
+        let response = await fetch(
+            `${this.uri_}/${lobby_id}/teams/${team_id}/players/${await GetUserIdFromToken()}`,
+            {
+                method: "DELETE",
+            }
+        );
+        return response.ok;
+    }
 }
 
 export type {TeamSummary, TeamDetail, LobbySummary, LobbyDetail, QueryLobbySummaryListResponseDTO};
