@@ -103,7 +103,12 @@ namespace L4dOpenMatchMakingPlatform.Backend
         [HttpPost]
         public IActionResult CreateCustomGame([FromBody] CreateCustomGameRequestDTO dto)
         {
-            var new_custom_game = custom_game_service_.CreateCustomGame(dto.lobby_type, null, dto.lobby_name, dto.description);
+            var new_custom_game = custom_game_service_.CreateCustomGame(
+                dto.lobby_type,
+                dto.lobby_owner_id,
+                dto.lobby_name,
+                dto.description
+            );
             var lobby_detail = new LobbyDetail() {
                 id = new_custom_game.lobby_id,
                 name = new_custom_game.lobby_name,

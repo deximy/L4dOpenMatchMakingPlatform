@@ -65,7 +65,8 @@ class CustomGameManager
                 ),
                 body: JSON.stringify(
                     {
-                        "lobby_type": "string"
+                        "lobby_type": "string",
+                        "lobby_owner_id": await GetUserIdFromToken(),
                     }
                 )
             }
