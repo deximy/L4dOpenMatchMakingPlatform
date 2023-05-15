@@ -1,3 +1,4 @@
+using L4dOpenMatchMakingPlatform.Backend.Repositories;
 using L4dOpenMatchMakingPlatform.Backend.Services;
 using Microsoft.AspNetCore.SignalR;
 
@@ -12,6 +13,8 @@ namespace L4dOpenMatchMakingPlatform.Backend
             // Add services to the container.
             builder.Services.AddSignalR();
             builder.Services.AddSingleton<IUserIdProvider, BaseModeAuthenticationService>();
+            builder.Services.AddSingleton<CustomGameRepository>();
+            builder.Services.AddSingleton<CustomGameService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
