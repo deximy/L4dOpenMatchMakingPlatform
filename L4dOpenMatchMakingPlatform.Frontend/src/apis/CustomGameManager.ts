@@ -1,4 +1,5 @@
 import {Global} from "./Global";
+import {GetUserIdFromToken} from "./Authentication";
 
 type TeamSummary = {
     current_player_count: number,
@@ -6,9 +7,9 @@ type TeamSummary = {
 }
 
 type TeamDetail = {
-    team_id: string,
-    team_name: string,
-    current_players: string[],
+    id: string,
+    name: string,
+    players: string[],
     max_player_count: number,
 };
 
@@ -26,7 +27,7 @@ type LobbyDetail = {
     name: string,
     description: string,
     type: string,
-    owner: string,
+    owner: string | null,
     endpoint: string | null,
     team1: TeamDetail,
     team2: TeamDetail,
@@ -69,7 +70,7 @@ class CustomGameManager
                 )
             }
         );
-        return await response.json() as LobbyDetail;
+        return await response.json();
     }
 
     public async QueryLobbySummaryList(page_index: number, page_size: number): Promise<QueryLobbySummaryListResponseDTO>

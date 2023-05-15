@@ -55,9 +55,8 @@ namespace L4dOpenMatchMakingPlatform.Backend
         }
 
         [HttpGet("{lobby_id}")]
-        public IActionResult QueryLobbySummary([FromRoute] Guid lobby_id)
+        public IActionResult QueryLobbyDetail([FromRoute] Guid lobby_id)
         {
-            var lobby = custom_game_service_.GetGustomGame(lobby_id);
             /*
             var properties = lobby.GetType().GetProperties();
             var selected_properties = properties.IntersectBy(filter_array.Distinct(), property => property.Name);
@@ -67,16 +66,77 @@ namespace L4dOpenMatchMakingPlatform.Backend
                 result_dictionary.Add(property.Name, property.GetValue(lobby));
             }
             */
-            return Ok(lobby);
+            var lobby = custom_game_service_.GetGustomGame(lobby_id);
+            var lobby_detail = new LobbyDetail() {
+                id = lobby_id,
+                name = lobby.lobby_name,
+                description = lobby.lobby_description,
+                type = lobby.lobby_type,
+                owner = lobby.lobby_owner,
+                endpoint = lobby.lobby_server_endpoint,
+                team1 = new TeamDetail() {
+                    id = lobby.team1.team_id,
+                    name = lobby.team1.team_name,
+                    players = lobby.team1.current_players,
+                    max_player_count = lobby.team1.max_player_count,
+                },
+                team2 = new TeamDetail()
+                {
+                    id = lobby.team2.team_id,
+                    name = lobby.team2.team_name,
+                    players = lobby.team2.current_players,
+                    max_player_count = lobby.team2.max_player_count,
+                },
+                team3 = new TeamDetail()
+                {
+                    id = lobby.team3.team_id,
+                    name = lobby.team3.team_name,
+                    players = lobby.team3.current_players,
+                    max_player_count = lobby.team3.max_player_count,
+                },
+                created_at = lobby.created_at,
+                ended_at = lobby.ended_at,
+            };
+            return Ok(lobby_detail);
         }
 
         [HttpPost]
         public IActionResult CreateCustomGame([FromBody] CreateCustomGameRequestDTO dto)
         {
             var new_custom_game = custom_game_service_.CreateCustomGame(dto.lobby_type, null, dto.lobby_name, dto.description);
+            var lobby_detail = new LobbyDetail() {
+                id = new_custom_game.lobby_id,
+                name = new_custom_game.lobby_name,
+                description = new_custom_game.lobby_description,
+                type = new_custom_game.lobby_type,
+                owner = new_custom_game.lobby_owner,
+                endpoint = new_custom_game.lobby_server_endpoint,
+                team1 = new TeamDetail() {
+                    id = new_custom_game.team1.team_id,
+                    name = new_custom_game.team1.team_name,
+                    players = new_custom_game.team1.current_players,
+                    max_player_count = new_custom_game.team1.max_player_count,
+                },
+                team2 = new TeamDetail()
+                {
+                    id = new_custom_game.team2.team_id,
+                    name = new_custom_game.team2.team_name,
+                    players = new_custom_game.team2.current_players,
+                    max_player_count = new_custom_game.team2.max_player_count,
+                },
+                team3 = new TeamDetail()
+                {
+                    id = new_custom_game.team3.team_id,
+                    name = new_custom_game.team3.team_name,
+                    players = new_custom_game.team3.current_players,
+                    max_player_count = new_custom_game.team3.max_player_count,
+                },
+                created_at = new_custom_game.created_at,
+                ended_at = new_custom_game.ended_at,
+            };
             return Created(
                 new_custom_game.lobby_id.ToString(),
-                new_custom_game
+                lobby_detail
             );
         }
 
