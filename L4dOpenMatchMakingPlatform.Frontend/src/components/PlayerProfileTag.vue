@@ -3,21 +3,19 @@ import {NCard} from "naive-ui";
 import {NIcon} from "naive-ui";
 import {NTag} from "naive-ui";
 
-import {GetUserIdFromToken} from "../apis/Authentication";
-import {ref} from "vue";
-const user_id = ref<string | null>(null);
-GetUserIdFromToken().then(
-    (result) => {
-        user_id.value = result;
+const props = defineProps<
+    {
+        user_id: string | null
     }
-)
+>();
 </script>
 
 <template>
     <div class="player-profile">
         <n-card
+            v-if="user_id !== null"
             :bordered="false"
-            content-style="padding: 0; display: flex; align-items: center;"
+            content-style="display: flex; align-items: center;"
         >
             <n-icon :size="24">
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32">
@@ -27,6 +25,9 @@ GetUserIdFromToken().then(
             </n-icon>
             <span class="user-id" v-text="user_id"></span>
             <n-tag class="user-role" size="small" type="info">管理员</n-tag>
+        </n-card>
+        <n-card v-else content-style="text-align: center;">
+            <span>EMPTY</span>
         </n-card>
     </div>
 </template>

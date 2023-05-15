@@ -16,6 +16,10 @@ export default defineConfig(
                 "/Hunter1v1": {
                     target: "ws://localhost:7000",
                     changeOrigin: true,
+                },
+                "/apis": {
+                    target: "http://localhost:7000",
+                    changeOrigin: true
                 }
             }
         }

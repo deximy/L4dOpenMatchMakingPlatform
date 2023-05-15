@@ -44,7 +44,7 @@ const message = useMessage();
                     <h1>Open Match-Making Platform</h1>
                 </div>
                 <div class="player-profile" ref="player_profile_element">
-                    <PlayerProfileTag />
+                    <PlayerProfileTag :user_id="user_id"/>
                 </div>
             </div>
             <div class="action-list">
