@@ -16,9 +16,9 @@ namespace L4dOpenMatchMakingPlatform.Backend.Controllers
         }
 
         [HttpGet("{mode_name}")]
-        public IActionResult GetModeServers([FromRoute] string mode_name)
+        public IActionResult GetEndpointListForGameMode([FromRoute] string mode_name)
         {
-            throw new NotImplementedException();
+            return Ok(endpoint_service_.GetEndpointsForGameMode(mode_name));
         }
 
         [HttpPost]

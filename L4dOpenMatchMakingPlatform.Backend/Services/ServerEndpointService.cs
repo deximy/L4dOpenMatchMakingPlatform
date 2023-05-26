@@ -23,5 +23,10 @@ namespace L4dOpenMatchMakingPlatform.Backend.Services
             };
             return endpoint_repository_.Create(new_server_endpoint);
         }
+
+        public IEnumerable<ServerEndpointModel> GetEndpointsForGameMode(string mode_name)
+        {
+            return endpoint_repository_.Query(x => x.supported_mode.Contains(mode_name));
+        }
     }
 }
