@@ -22,5 +22,17 @@ namespace L4dOpenMatchMakingPlatform.Backend.Repositories
         {
             return endpoint_list_.Where(where_expression);
         }
+
+        public ServerEndpointModel Query(Guid id)
+        {
+            return endpoint_list_.First(i => i.id == id);
+        }
+
+        public ServerEndpointModel Update(ServerEndpointModel server_endpoint)
+        {
+            var index = endpoint_list_.IndexOf(endpoint_list_.First(i => i.id == server_endpoint.id));
+            endpoint_list_[index] = server_endpoint;
+            return endpoint_list_.First(i => i.id == server_endpoint.id);
+        }
     }
 }
