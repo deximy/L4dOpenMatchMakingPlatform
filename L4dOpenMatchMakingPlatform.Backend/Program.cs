@@ -17,6 +17,7 @@ namespace L4dOpenMatchMakingPlatform.Backend
             builder.Services.AddSingleton<CustomGameService>();
             builder.Services.AddSingleton<ServerEndpointRepository>();
             builder.Services.AddSingleton<ServerEndpointService>();
+            builder.Services.AddSingleton<BindService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

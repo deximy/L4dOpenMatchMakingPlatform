@@ -183,7 +183,7 @@ namespace L4dOpenMatchMakingPlatform.Backend
             {
                 if (dto.properties.TryGetValue("lobby_server_endpoint", out string? result))
                 {
-                    throw new NotImplementedException();
+                    bind_service_.BindServerAndLobby(Guid.Parse(result), lobby_id);
                 }
             }
 

@@ -28,5 +28,16 @@ namespace L4dOpenMatchMakingPlatform.Backend.Services
         {
             return endpoint_repository_.Query(x => x.supported_mode.Contains(mode_name));
         }
+
+        public ServerEndpointModel GetEndpointById(Guid endpoint_id)
+        {
+            return endpoint_repository_.Query(endpoint_id);
+        }
+
+        public ServerEndpointModel BindLobbyToEndpoint(ServerEndpointModel endpoint_model, CustomGameModel lobby_model)
+        {
+            endpoint_model.server_bound_lobby = lobby_model;
+            return endpoint_repository_.Update(endpoint_model);
+        }
     }
 }
