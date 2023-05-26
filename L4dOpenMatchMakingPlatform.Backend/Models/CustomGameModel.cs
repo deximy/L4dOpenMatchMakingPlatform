@@ -12,7 +12,7 @@
 
         public Guid? lobby_owner { get; set; }
 
-        public string? lobby_server_endpoint { get; set; }
+        public ServerEndpointModel? lobby_bound_server { get; set; }
 
         public DateTime created_at { get; set; }
 

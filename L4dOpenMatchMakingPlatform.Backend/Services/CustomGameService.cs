@@ -20,7 +20,7 @@ namespace L4dOpenMatchMakingPlatform.Backend.Services
                 lobby_description = lobby_description,
                 lobby_owner = lobby_owner,
                 lobby_type = lobby_type,
-                lobby_server_endpoint = null,
+                lobby_bound_server = null,
                 created_at = DateTime.UtcNow,
                 ended_at = null,
                 team1 = new TeamModel() {
@@ -88,11 +88,10 @@ namespace L4dOpenMatchMakingPlatform.Backend.Services
             return custom_game_repository_.Update(lobby);
         }
 
-        public CustomGameModel UpdateCustomGameEndpoint(Guid lobby_id, string? endpoint)
+        public CustomGameModel BindEndpointToLobby(CustomGameModel lobby_model, ServerEndpointModel endpoint_model)
         {
-            var lobby = custom_game_repository_.Query(lobby_id);
-            lobby.lobby_server_endpoint = endpoint;
-            return custom_game_repository_.Update(lobby);
+            lobby_model.lobby_bound_server = endpoint_model;
+            return custom_game_repository_.Update(lobby_model);
         }
     }
 }

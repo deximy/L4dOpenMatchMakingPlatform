@@ -10,10 +10,12 @@ namespace L4dOpenMatchMakingPlatform.Backend
     public class CustomGameController : ControllerBase
     {
         private readonly CustomGameService custom_game_service_;
+        private readonly BindService bind_service_;
 
-        public CustomGameController(CustomGameService custom_game_manager)
+        public CustomGameController(CustomGameService custom_game_manager, BindService bind_service)
         {
             custom_game_service_ = custom_game_manager;
+            bind_service_ = bind_service;
         }
 
         [HttpGet]
@@ -73,7 +75,13 @@ namespace L4dOpenMatchMakingPlatform.Backend
                 description = lobby.lobby_description,
                 type = lobby.lobby_type,
                 owner = lobby.lobby_owner,
-                endpoint = lobby.lobby_server_endpoint,
+                server = lobby.lobby_bound_server == null ? null : new ServerDetail() {
+                    id = lobby.lobby_bound_server.id,
+                    endpoint = lobby.lobby_bound_server.endpoint,
+                    name = lobby.lobby_bound_server.name,
+                    owner_id = lobby.lobby_bound_server.owner_id,
+                    supported_mode = lobby.lobby_bound_server.supported_mode,
+                },
                 team1 = new TeamDetail() {
                     id = lobby.team1.team_id,
                     name = lobby.team1.team_name,
@@ -115,7 +123,7 @@ namespace L4dOpenMatchMakingPlatform.Backend
                 description = new_custom_game.lobby_description,
                 type = new_custom_game.lobby_type,
                 owner = new_custom_game.lobby_owner,
-                endpoint = new_custom_game.lobby_server_endpoint,
+                server = null,
                 team1 = new TeamDetail() {
                     id = new_custom_game.team1.team_id,
                     name = new_custom_game.team1.team_name,
@@ -175,7 +183,7 @@ namespace L4dOpenMatchMakingPlatform.Backend
             {
                 if (dto.properties.TryGetValue("lobby_server_endpoint", out string? result))
                 {
-                    custom_game_service_.UpdateCustomGameEndpoint(lobby_id, result);
+                    throw new NotImplementedException();
                 }
             }
 

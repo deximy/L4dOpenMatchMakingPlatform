@@ -12,7 +12,7 @@
 
         public Guid? owner { get; set; }
 
-        public string? endpoint { get; set; }
+        public ServerDetail? server { get; set; }
 
         public TeamDetail team1 { get; set; }
 
