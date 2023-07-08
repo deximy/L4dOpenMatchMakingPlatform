@@ -18,7 +18,8 @@ namespace L4dOpenMatchMakingPlatform.Backend.Services
                 lobby_id = Guid.NewGuid(),
                 lobby_name = lobby_name ?? "默认",
                 lobby_description = lobby_description,
-                lobby_owner = lobby_owner,
+                // TODO: This part should be updated to fit the latest model
+                /*lobby_owner = lobby_owner,
                 lobby_type = lobby_type,
                 lobby_bound_server = null,
                 created_at = DateTime.UtcNow,
@@ -40,7 +41,7 @@ namespace L4dOpenMatchMakingPlatform.Backend.Services
                     team_name = "Team3",
                     max_player_count = 4,
                     current_players = new List<Guid>()
-                },
+                },*/
             };
             return custom_game_repository_.Create(new_custom_game);
         }
@@ -77,20 +78,23 @@ namespace L4dOpenMatchMakingPlatform.Backend.Services
         public CustomGameModel UpdateCustomGameType(Guid lobby_id, string type)
         {
             var lobby = custom_game_repository_.Query(lobby_id);
-            lobby.lobby_type = type;
+            // TODO: This part should be updated to fit the latest model
+            /*lobby.lobby_type = type;*/
             return custom_game_repository_.Update(lobby);
         }
 
         public CustomGameModel UpdateCustomGameOwner(Guid lobby_id, Guid? owner)
         {
             var lobby = custom_game_repository_.Query(lobby_id);
-            lobby.lobby_owner = owner;
+            // TODO: This part should be updated to fit the latest model
+            /*lobby.lobby_owner = owner;*/
             return custom_game_repository_.Update(lobby);
         }
 
         public CustomGameModel BindEndpointToLobby(CustomGameModel lobby_model, ServerEndpointModel endpoint_model)
         {
-            lobby_model.lobby_bound_server = endpoint_model;
+            // TODO: This part should be updated to fit the latest model
+            /*lobby_model.lobby_bound_server = endpoint_model;*/
             return custom_game_repository_.Update(lobby_model);
         }
     }

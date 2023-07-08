@@ -29,7 +29,8 @@ namespace L4dOpenMatchMakingPlatform.Backend
                     new LobbySummary() {
                         id = lobby.lobby_id,
                         name = lobby.lobby_name,
-                        type = lobby.lobby_type,
+                        // TODO: This part should be updated to fit the latest model
+                        /* type = lobby.lobby_type,
                         team1 = new TeamSummary() {
                             current_player_count = lobby.team1.current_players.Count,
                             max_player_count = lobby.team1.max_player_count,
@@ -41,7 +42,7 @@ namespace L4dOpenMatchMakingPlatform.Backend
                         team3 = new TeamSummary() {
                             current_player_count = lobby.team3.current_players.Count,
                             max_player_count = lobby.team3.max_player_count,
-                        },
+                        }, */
                     }
                 );
             }
@@ -73,7 +74,8 @@ namespace L4dOpenMatchMakingPlatform.Backend
                 id = lobby_id,
                 name = lobby.lobby_name,
                 description = lobby.lobby_description,
-                type = lobby.lobby_type,
+                // TODO: This part should be updated to fit the latest model
+                /*type = lobby.lobby_type,
                 owner = lobby.lobby_owner,
                 server = lobby.lobby_bound_server == null ? null : new ServerDetail() {
                     id = lobby.lobby_bound_server.id,
@@ -101,7 +103,7 @@ namespace L4dOpenMatchMakingPlatform.Backend
                     name = lobby.team3.team_name,
                     players = lobby.team3.current_players,
                     max_player_count = lobby.team3.max_player_count,
-                },
+                },*/
                 created_at = lobby.created_at,
                 ended_at = lobby.ended_at,
             };
@@ -121,7 +123,8 @@ namespace L4dOpenMatchMakingPlatform.Backend
                 id = new_custom_game.lobby_id,
                 name = new_custom_game.lobby_name,
                 description = new_custom_game.lobby_description,
-                type = new_custom_game.lobby_type,
+                // TODO: This part should be updated to fit the latest model
+                /*type = new_custom_game.lobby_type,
                 owner = new_custom_game.lobby_owner,
                 server = null,
                 team1 = new TeamDetail() {
@@ -143,7 +146,7 @@ namespace L4dOpenMatchMakingPlatform.Backend
                     name = new_custom_game.team3.team_name,
                     players = new_custom_game.team3.current_players,
                     max_player_count = new_custom_game.team3.max_player_count,
-                },
+                },*/
                 created_at = new_custom_game.created_at,
                 ended_at = new_custom_game.ended_at,
             };
@@ -194,7 +197,8 @@ namespace L4dOpenMatchMakingPlatform.Backend
         public IActionResult HandlePlayerJoinLobby([FromRoute] Guid lobby_id, [FromRoute] Guid team_id, [FromRoute] Guid player_id)
         {
             var lobby = custom_game_service_.GetGustomGame(lobby_id);
-            if (lobby.team1.team_id == team_id)
+            // TODO: This part should be updated to fit the latest model
+            /*if (lobby.team1.team_id == team_id)
             {
                 lobby.team1.current_players.Add(player_id);
             }
@@ -209,7 +213,7 @@ namespace L4dOpenMatchMakingPlatform.Backend
             else
             {
                 return BadRequest();
-            }
+            }*/
             return Ok();
         }
 
@@ -217,7 +221,8 @@ namespace L4dOpenMatchMakingPlatform.Backend
         public IActionResult HandlePlayerLeaveLobby([FromRoute] Guid lobby_id, [FromRoute] Guid team_id, [FromRoute] Guid player_id)
         {
             var lobby = custom_game_service_.GetGustomGame(lobby_id);
-            if (lobby.team1.team_id == team_id)
+            // TODO: This part should be updated to fit the latest model
+            /*if (lobby.team1.team_id == team_id)
             {
                 lobby.team1.current_players.Remove(player_id);
             }
@@ -232,7 +237,7 @@ namespace L4dOpenMatchMakingPlatform.Backend
             else
             {
                 return BadRequest();
-            }
+            }*/
             return Ok();
         }
     }
